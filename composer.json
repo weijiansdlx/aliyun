@@ -1,0 +1,26 @@
+{
+    "name": "gulltour/aliyun",
+    "type": "yii2-extension",
+    "description": "Yii2 extension for Aliyun library",
+    "keywords": ["yii2","extension","widget","oss","dayu","log","mns"],
+    "homepage": "https://github.com/weijiansdlx/aliyun",
+    "license": "GPL-3.0+",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Wei Jian",
+            "email": "fancy.wei@qq.com",
+            "homepage": "https://github.com/weijiansdlx",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "gulltour\\aliyun\\": ""
+        }
+    }
+}
