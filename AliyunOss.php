@@ -11,8 +11,9 @@ require_once __DIR__.'/aliyun-oss-php-sdk-2.2.2/autoload.php';
  *          'bucket'=>'',
  *          'AccessKeyId' => '',
  *          'AccessKeySecret' => '',
- *          'endpoint'=>'oss-cn-hangzhou.aliyuncs.com',
- *          'imageHost' => 'http://bucket.img-cn-hangzhou.aliyuncs.com/'
+ *          'ossServer' => '', //服务器外网地址，杭州为 http://oss-cn-hangzhou.aliyuncs.com
+ *          'ossServerInternal' => '', //服务器内网地址，杭州为 http://oss-cn-hangzhou-internal.aliyuncs.com 如果为空则不走内网上传，内网上传会节省流量
+ *          'imageHost' => '' //自定义资源域名 默认为 http://bucket.img-cn-hangzhou.aliyuncs.com/
  *      ],
  */
 class AliyunOss extends Component
@@ -20,17 +21,28 @@ class AliyunOss extends Component
     public $bucket = '';
     public $AccessKeyId = '';
     public $AccessKeySecret = '';
-    public $endpoint = 'oss-cn-hangzhou.aliyuncs.com';
+    public $ossServer = 'oss-cn-hangzhou.aliyuncs.com';
+    public $ossServerInternal = '';
     public $imageHost = '';
 
     private $client;
     public function init()
     {
+        if (!isset($this->AccessKeyId)) {
+            throw new InvalidConfigException('请先配置AccessKeyId');
+        }
+        if (!isset($this->AccessKeySecret)) {
+            throw new InvalidConfigException('请先配置AccessKeySecret');
+        }
+        if (!isset($this->bucket)) {
+            throw new InvalidConfigException('请先创建并配置bucket');
+        }
         if (empty($this->imageHost)) {
             $this->imageHost = 'http://'.$this->bucket.'.'.$this->endpoint.'/';
         }
+        $ossServer = isset($this->ossServerInternal) ? $this->ossServerInternal : $this->ossServer;
         try {
-            $this->client = new \OSS\OssClient($this->AccessKeyId, $this->AccessKeySecret, $this->endpoint);
+            $this->client = new \OSS\OssClient($this->AccessKeyId, $this->AccessKeySecret, $ossServer);
         } catch (OssException $e) {
             print $e->getMessage();
         }

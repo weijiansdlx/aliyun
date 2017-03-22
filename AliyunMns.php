@@ -1,5 +1,5 @@
 <?php
-namespace aliyun\mns;
+namespace gulltour\aliyun;
 
 require_once __DIR__.'/aliyun-mns-php-sdk-1.3.3/mns-autoloader.php';
 use yii\base\Component;

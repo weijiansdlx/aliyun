@@ -14,74 +14,15 @@ $ php composer.phar require gulltour/aliyun "~1.0.0"
 
 添加：
 ```php
-    'oss'=>array(
-        'ossServer' => '', //服务器外网地址，深圳为 http://oss-cn-shenzhen.aliyuncs.com
-        'ossServerInternal' => '', //服务器内网地址，深圳为 http://oss-cn-shenzhen-internal.aliyuncs.com
-        'AccessKeyId' => '', //阿里云给的AccessKeyId
-        'AccessKeySecret' => '', //阿里云给的AccessKeySecret
-        'Bucket' => '' //创建的空间名
-    ),
-```
-
-在components中创建Oss.php，内容如下：
-
-```php
-
-namespace app\components;
-
-use gulltour\AliyunOss\AliyunOSS;
-use Yii;
-
-class OSS {
-
-    private $ossClient;
-
-    public function __construct($isInternal = false)
-    {
-        $serverAddress = $isInternal ? Yii::$app->params['oss']['ossServerInternal'] : Yii::$app->params['oss']['ossServer'];
-        $this->ossClient = AliyunOSS::boot(
-            $serverAddress,
-            Yii::$app->params['oss']['AccessKeyId'],
-            Yii::$app->params['oss']['AccessKeySecret']
-        );
-    }
-
-    public static function upload($ossKey, $filePath)
-    {
-        //$oss = new OSS(true); // 上传文件使用内网，免流量费
-        $oss = new OSS();
-        $oss->ossClient->setBucket(Yii::$app->params['oss']['Bucket']);
-        $oss->ossClient->uploadFile($ossKey, $filePath);
-    }
-
-    public static function getUrl($ossKey)
-    {
-        $oss = new OSS();
-        $oss->ossClient->setBucket(Yii::$app->params['oss']['Bucket']);
-        return preg_replace('/(.*)\?OSSAccessKeyId=.*/', '$1', $oss->ossClient->getUrl($ossKey, new \DateTime("+1 day")));
-    }
-
-    public static function delFile($ossKey)
-    {
-        $oss = new OSS();
-        $oss->ossClient->setBucket(Yii::$app->params['oss']['Bucket']);
-        $oss->ossClient->delFile($ossKey);
-    }
-
-    public static function createBucket($bucketName)
-    {
-        $oss = new OSS();
-        return $oss->ossClient->createBucket($bucketName);
-    }
-
-    public static function getAllObjectKey($bucketName)
-    {
-        $oss = new OSS();
-        return $oss->ossClient->getAllObjectKey($bucketName);
-    }
-
-}
-
+'oss'=>[
+         'class'=>'gulltour\aliyun\oss\AliyunOss',
+         'bucket'=>'',
+         'AccessKeyId' => '',
+         'AccessKeySecret' => '',
+         'ossServer' => '', //服务器外网地址，杭州为 http://oss-cn-hangzhou.aliyuncs.com
+         'ossServerInternal' => '', //服务器内网地址，杭州为 http://oss-cn-hangzhou-internal.aliyuncs.com 如果为空则不走内网上传，内网上传会节省流量
+         'imageHost' => '' //自定义资源域名 默认为 http://bucket.img-cn-hangzhou.aliyuncs.com/
+     ],
 ```
 
 
@@ -89,15 +30,7 @@ class OSS {
 
 ```php
 
-use app\components\Oss;
-
-OSS::upload('文件名', '本地路径'); // 上传一个文件
-
-echo OSS::getUrl('某个文件的名称'); // 打印出某个文件的外网链接
-
-OSS::createBucket('一个字符串'); // 新增一个 Bucket。注意，Bucket 名称具有全局唯一性，也就是说跟其他人的 Bucket 名称也不能相同。
-
-OSS::getAllObjectKey('某个 Bucket 名称'); // 获取该 Bucket 中所有文件的文件名，返回 Array。
+Yii::$app->oss->upload2oss($filePath, $ssoPath);
 
 ```
 

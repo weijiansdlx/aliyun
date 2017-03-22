@@ -1,5 +1,5 @@
 <?php
-namespace aliyun\log;
+namespace gulltour\aliyun;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
