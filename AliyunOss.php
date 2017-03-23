@@ -38,9 +38,9 @@ class AliyunOss extends Component
             throw new InvalidConfigException('请先创建并配置bucket');
         }
         if (empty($this->imageHost)) {
-            $this->imageHost = 'http://'.$this->bucket.'.'.$this->endpoint.'/';
+            $this->imageHost = 'http://'.$this->bucket.'.'.$this->ossServer.'/';
         }
-        $ossServer = isset($this->ossServerInternal) ? $this->ossServerInternal : $this->ossServer;
+        $ossServer = empty($this->ossServerInternal) ? $this->ossServer : $this->ossServerInternal ;
         try {
             $this->client = new \OSS\OssClient($this->AccessKeyId, $this->AccessKeySecret, $ossServer);
         } catch (OssException $e) {
