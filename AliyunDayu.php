@@ -31,6 +31,7 @@ class AliyunDayu extends Component
      * @param $mobile 手机号码
      * @param $params 发送信息参数
      * @param $template 阿里大于模板ID
+     * @return mixed
      */
     public function smsSend($mobile, $params, $template){
         $req = new \AlibabaAliqinFcSmsNumSendRequest;
@@ -40,8 +41,7 @@ class AliyunDayu extends Component
         $req->setRecNum($mobile);
         $req->setSmsTemplateCode($template);
         $resp = $this->client->execute($req);
-        #TODO 记录发送短信的日志
-        var_dump($resp);
+        return $resp;
     }
 
 
