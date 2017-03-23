@@ -32,9 +32,11 @@ $ php composer.phar require gulltour/aliyun "~1.0.0"
 
 Yii::$app->oss->upload2oss($filePath, $ssoPath);
 
+Yii::$app->oss->getImageUrl($path, $style=null);
+
 ```
 
-###LOG Yii2使用
+###LOG Yii2配置
 
 
 ```php
@@ -48,8 +50,26 @@ Yii::$app->oss->upload2oss($filePath, $ssoPath);
        ],
 
 ```
+###阿里大于 Yii2配置
 
 
+```php
+ 'dayu'=>[
+             'class'=>'gulltour\aliyun\aliyunDayu',
+             'appKey' => '',
+             'secretKey' => '',
+             'signName' => '',
+         ],
+
+```
+###使用
+
+```php
+
+Yii::$app->dayu->smsSend($mobile, $params, $template);
+
+
+```
 ###MNS Yii2使用
 
 YII2插件-阿里云消息队列SDK
