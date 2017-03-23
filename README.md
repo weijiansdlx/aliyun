@@ -1,4 +1,4 @@
-###阿里云[OSS,DAYU,LOG,MNS]
+###阿里云[OSS,DAYU,LOG,MNS, MQ]
 
 阿里云官方SDK的Composer封装，支持Yii2。
 添加删除文件的功能，修改getUrl（只返回文件外链url，不带其他参数）。
@@ -69,6 +69,29 @@ Yii::$app->oss->getImageUrl($path, $style=null);
 Yii::$app->dayu->smsSend($mobile, $params, $template);
 
 
+```
+MQ Yii2使用
+===
+配置
+---
+在组件配置中添加如下配置，
+```php
+'notificationMq' => [
+            'class' => 'gulltour\aliyun\AliyunMQ',
+            'endpoint' => 'http://publictest-rest.ons.aliyun.com',
+            'topic' => 'kooeu_email_sms',
+            'accessKeyId' => 'iEjugjCFUSBh1IXu',
+            'accessKeySecret' => 'kvNO5lvWEBLGAEOJKfTWFjVJmWmMde',
+            'producerGroup' => 'PID_HYW_Message',
+            'consumerGroup' => 'CID_HYW_Message',
+            'messageReceiver' => function($message) {echo $message;},
+            'sentCallback' => function($message, $aliMsgID) {echo $message;echo $aliMsgID;},
+]
+```
+使用示例
+---
+```php
+Yii::$app->notificationMq->sendMessage('1234567891');
 ```
 ###MNS Yii2使用
 
