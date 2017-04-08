@@ -156,8 +156,9 @@ class AliyunMQ extends Component {
 			if ($this->sentCallback) {
 				call_user_func($this->sentCallback, $message, $result['msgId']);
 			}
+			return true;
 		}
-	
+		return false;
 	}
 	
 	/**
@@ -166,7 +167,7 @@ class AliyunMQ extends Component {
 	 */
 	private function deleteMessage($messages){
 		$newline = "\n";
-        var_dump($messages);
+        Yii::info(var_export($messages, true), __METHOD__);
 		//依次遍历每个topic消息
 		foreach ((array)$messages as $message){
 			if ($this->messageReceiver) {//阿里消息推送过来之后调用所配置的消息消费回调方法进行消费
