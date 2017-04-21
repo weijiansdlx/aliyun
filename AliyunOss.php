@@ -87,7 +87,7 @@ class AliyunOss extends Component
         if (empty($style)){
             return $this->imageHost.$path;
         }
-        return $this->imageHost.$path.'@!'.$style;
+        return $this->imageHost.$path.$style;
     }
 
     public function __call($method_name, $args)
